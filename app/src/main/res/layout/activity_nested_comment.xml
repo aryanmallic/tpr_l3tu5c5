@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_nested_comment_clParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.NestedCommentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10sdp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/activity_nested_comment_civProfile"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginRight="@dimen/_5sdp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/activity_nested_comment_tvName"
+                            style="@style/StyleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Atul Singh"
+                            android:textColor="@color/colorAtomicBlack"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/activity_nested_comment_tvComment"
+                            style="@style/StyleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/colorAtomicBlack" />
+
+                        <!--<TextView
+                            android:id="@+id/design_item_more_comment_tvRepliesCount"
+                            style="@style/StyleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3 replies"
+                            android:textColor="@color/colorAtomicBlack"
+                            android:textStyle="bold"/>-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/activity_nested_comment_tvTime"
+                                style="@style/StyleTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:text="1h" />
+
+                            <TextView
+                                android:id="@+id/activity_nested_comment_tvReply"
+                                style="@style/StyleTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_3sdp"
+                                android:text="Reply" />
+                        </LinearLayout>
+
+                        <!--<LinearLayout
+                            android:id="@+id/design_item_more_comment_llSingleComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center|left"
+                            android:visibility="gone">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/design_item_more_comment_civNestedProfile"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginRight="@dimen/_5sdp"/>
+
+                            <TextView
+                                style="@style/StyleTextView"
+                                android:id="@+id/design_item_more_comment_tvNestedName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Atul Singh"
+                                android:textColor="@color/colorAtomicBlack"
+                                android:textStyle="bold"
+                                android:layout_marginRight="@dimen/_5sdp"/>
+
+                            <TextView
+                                style="@style/StyleTextView"
+                                android:id="@+id/design_item_more_comment_tvNestedComment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun "
+                                android:textColor="@color/colorAtomicBlack"
+                                android:maxLines="1"
+                                android:ellipsize="end"/>
+                        </LinearLayout>-->
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/colorText"/>-->
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_nested_comment_rvNestedComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/_5sdp"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp">
+
+            <!--<ImageButton
+                android:id="@+id/activity_nested_comment_ibAdd"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@drawable/ic_add" />-->
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/activity_nested_comment_civCommentProfile"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/activity_nested_comment_etPostComment"
+                style="@style/StyleEditTextPost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorAtomicBlack"
+                android:maxLines="3"
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingTop="@dimen/_8sdp" />
+
+            <ImageButton
+                android:id="@+id/activity_nested_comment_ibSend"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:background="@drawable/ic_send" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_5sdp">
+
+    <LinearLayout
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/design_item_nested_reply_llSingleComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/design_item_nested_reply_civNestedProfile"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_5sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/design_item_nested_reply_tvNestedName"
+                style="@style/StyleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:text="Atul Singh"
+                android:textColor="@color/colorAtomicBlack"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/design_item_nested_reply_tvNestedComment"
+                style="@style/StyleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun "
+                android:textColor="@color/colorAtomicBlack" />
+
+
+            <TextView
+                android:id="@+id/design_item_more_comment_tvTime"
+                style="@style/StyleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:text="1h"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

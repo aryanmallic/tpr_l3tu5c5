@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_3sdp"
+    android:background="?selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/design_item_more_comment_civProfile"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginRight="@dimen/_5sdp"/>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/StyleTextView"
+                android:id="@+id/design_item_more_comment_tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Atul Singh"
+                android:textColor="@color/colorAtomicBlack"
+                android:textStyle="bold" />
+            <TextView
+                style="@style/StyleTextView"
+                android:id="@+id/design_item_more_comment_tvComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun "
+                android:textColor="@color/colorAtomicBlack"/>
+
+            <TextView
+                android:id="@+id/design_item_more_comment_tvRepliesCount"
+                style="@style/StyleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 replies"
+                android:textColor="@color/colorAtomicBlack"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center|left">
+
+
+                <TextView
+                    android:id="@+id/design_item_more_comment_tvTime"
+                    style="@style/StyleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:text="1h"/>
+
+                <TextView
+                    android:id="@+id/design_item_more_comment_tvReply"
+                    style="@style/StyleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reply"
+                    android:padding="@dimen/_3sdp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/design_item_more_comment_llSingleComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center|left"
+                android:visibility="gone">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/design_item_more_comment_civNestedProfile"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_5sdp"/>
+
+                <TextView
+                    style="@style/StyleTextView"
+                    android:id="@+id/design_item_more_comment_tvNestedName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Atul Singh"
+                    android:textColor="@color/colorAtomicBlack"
+                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/_5sdp"/>
+
+                <TextView
+                    style="@style/StyleTextView"
+                    android:id="@+id/design_item_more_comment_tvNestedComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun hello this is test and fun "
+                    android:textColor="@color/colorAtomicBlack"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
