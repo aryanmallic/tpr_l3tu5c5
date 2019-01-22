@@ -47,6 +47,7 @@ public class SignUpActivity extends BaseActivity {
                         , etEmail.getText().toString()
                         , etPhone.getText().toString()
                         , etPassword.getText().toString());
+
                 getUser.getUserDetails();
             } else {
                 if(!checkSimilarity()) {
