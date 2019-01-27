@@ -103,6 +103,7 @@ public class NestedCommentActivity extends BaseActivity {
             Glide.with(mContext)
                     .load(new SharedPref(mContext).getUserImage())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .placeholder(R.drawable.ic_student)
                     .into(civCommentProfile);
             civCommentProfile.setVisibility(View.VISIBLE);
         }

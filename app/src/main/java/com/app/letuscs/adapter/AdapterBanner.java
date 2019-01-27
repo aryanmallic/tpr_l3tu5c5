@@ -40,6 +40,7 @@ public class AdapterBanner extends PagerAdapter implements View.OnClickListener{
         Glide.with(mContext)
                 .load(list.get(position).getImage())
                 .dontAnimate()
+                .placeholder(R.drawable.ic_place)
                 .into(ivImage);
         ivImage.setOnClickListener(this);
         container.addView(view);

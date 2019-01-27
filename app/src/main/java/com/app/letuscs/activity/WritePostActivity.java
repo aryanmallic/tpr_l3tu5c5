@@ -136,6 +136,7 @@ public class WritePostActivity extends BaseActivity {
 
         Glide.with(mContext).load(new SharedPref(mContext).getUserImage())
                 //.placeholder(R.drawable.ic_user)
+                .placeholder(R.drawable.ic_student)
                 .centerCrop()
                 .into(civProfile);
         tvName.setText(new SharedPref(mContext).getUserName());
@@ -184,10 +185,10 @@ public class WritePostActivity extends BaseActivity {
                 etWritePost.setFocusableInTouchMode(true);
                 break;
             case R.id.activity_write_post_ibAddImage:
-                if (imageData.size() <= 9) {
+                if (imageData.size() <= 7) {
                     openMyDialogToChooseImage();
                 } else {
-                    Toast.makeText(mContext, "Oops! Only 10 images could be uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Oops! Only 8 images could be uploaded", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.activity_write_post_tvPost:

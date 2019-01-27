@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_home_clParent"
@@ -21,25 +20,26 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp">
-            <android.support.v4.view.ViewPager
-                android:id="@+id/activity_home_vpBanner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_height="@dimen/_20sdp"/>
+                android:layout_height="@dimen/_150sdp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/activity_home_vpBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/activity_home_rvHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:overScrollMode="never"/>
+                android:overScrollMode="never" />
         </LinearLayout>
-
 
 
     </LinearLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.app.letuscs.models.modelLogin.ModelLogin;
 import com.app.letuscs.utility.SharedPref;
+import com.google.android.gms.auth.api.Auth;
 
 public abstract class GetUser extends AppCompatActivity {
 
@@ -20,9 +21,6 @@ public abstract class GetUser extends AppCompatActivity {
 
     public void onSuccess(Activity mActivity, ModelLogin response) {
         pref = new SharedPref(mActivity);
-
-        Log.d("TAG","TOKEN: "+response.getToken());
-
         String name = response.getData().get(0).getName();
         saveDetails(response.getData().get(0).getId()
                 , response.getToken()

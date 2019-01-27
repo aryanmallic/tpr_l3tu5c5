@@ -204,6 +204,7 @@ public class PostDetailActivity extends BaseActivity {
             Glide.with(mContext)
                     .load(new SharedPref(mContext).getUserImage())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .placeholder(R.drawable.ic_student)
                     .into(civCommentProfile);
             civCommentProfile.setVisibility(View.VISIBLE);
         }
@@ -273,7 +274,6 @@ public class PostDetailActivity extends BaseActivity {
     }
 
     private void getMyPostDetails(int postId) {
-
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         String auth = "bearer " + new SharedPref(mContext).getKey();
         Call<List<ModelPostDetail>> call = apiService.getPostDetail(auth, postId);

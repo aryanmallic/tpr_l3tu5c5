@@ -149,7 +149,8 @@
                     android:layout_marginRight="@dimen/_20sdp"
                     android:background="@drawable/back_social"
                     android:clickable="true"
-                    android:padding="@dimen/_4sdp">
+                    android:padding="@dimen/_4sdp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/_30sdp"
@@ -165,7 +166,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/back_social"
                     android:clickable="true"
-                    android:padding="@dimen/_4sdp">
+                    android:padding="@dimen/_4sdp"
+                    android:visibility="invisible">
 
                     <ImageView
                         android:layout_width="@dimen/_30sdp"

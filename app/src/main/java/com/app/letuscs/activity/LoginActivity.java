@@ -1,16 +1,17 @@
 package com.app.letuscs.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -25,12 +26,28 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.app.letuscs.R;
 import com.app.letuscs.helper.GetUser;
+import com.app.letuscs.helper.GoogleLogin;
 import com.app.letuscs.helper.ManualSignIn;
 import com.app.letuscs.localstorage.LocalConstants;
 import com.app.letuscs.localstorage.SharedPreferenceUtil;
 import com.app.letuscs.utility.AppController;
 import com.app.letuscs.utility.Constants;
 import com.app.letuscs.utility.SharedPref;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -47,7 +64,12 @@ public class LoginActivity extends BaseActivity {
     private Context mContext;
     private Button btLogin;
     private EditText etUsername, etPassword;
+    private LinearLayout llGoogle;
     private CoordinatorLayout clParent;
+    private static final int RC_SIGN_IN = 2;
+    private FirebaseAuth mAuth;
+    private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     protected int defineLayoutResource() {
@@ -60,13 +82,36 @@ public class LoginActivity extends BaseActivity {
         etUsername = findViewById(R.id.activity_login_etUsername);
         etPassword = findViewById(R.id.activity_login_etPassword);
         clParent = findViewById(R.id.activity_login_clParent);
+        llGoogle = findViewById(R.id.activity_login_llGoogle);
+
     }
 
     @Override
     protected void initializeComponentsBehaviour() {
         mContext = getApplicationContext();
+        mAuth = FirebaseAuth.getInstance();
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        //error
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+
         btLogin.setOnClickListener(this);
+        llGoogle.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -91,170 +136,85 @@ public class LoginActivity extends BaseActivity {
                     //fetchLoginStatus(username, password);
                 }
                 break;
+            case R.id.activity_login_llGoogle:
+
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+                break;
             default:
                 break;
         }
     }
 
-    public void onSignUp(View view){
-        startActivity(new Intent(mContext,SignUpActivity.class));
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                showMyLoader(LoginActivity.this);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.d("Google SignIn: ", "Google sign in failed", e);
+
+
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                int statusCode = result.getStatus().getStatusCode();
+                Toast.makeText(mContext, ""+statusCode+": "+result.getStatus().getStatusMessage(), Toast.LENGTH_SHORT).show();
+                //ibGoogle.setEnabled(true);
+                // ...
+            }
+        } else {
+            // Pass the activity result back to the Facebook SDK
+            // mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
-    /**
-     * Fetch Login Status From Server Here
-     *
-     * @param username
-     * @param password
-     */
-    private void fetchLoginStatus(final String username, final String password) {
-        showMyLoader(LoginActivity.this);
-        final int[] statusCode = new int[1];
-        String url = Constants.BASE_URL + "login";
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
 
-                if (statusCode[0] == 200) {
-                    if (response != null) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("TAG", "firebaseAuthWithGoogle:" + acct.getId());
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         hideMyLoader();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String token = jsonObject.getString("token");
-                            JSONArray jsonArray = jsonObject.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                int id = object.getInt("id");
-                                String name = object.getString("name");
-                                String type = object.getString("type");
-                                String contact_no = object.getString("contact_no");
-                                String email = object.getString("email");
-                                String address = object.getString("address");
-                                String country = object.getString("country");
-                                String state = object.getString("state");
-                                String is_verified_email = object.getString("is_verified_email");
-                                String is_verified_contact_no = object.getString("is_verified_contact_no");
-                                String img_url = object.getString("img_url");
-                                String referral_code = object.getString("referral_code");
-                                String is_password_change_required = object.getString("is_password_change_required");
-                                String facebook_id = object.getString("facebook_id");
-                                String google_id = object.getString("google_id");
-                                String continuous_claim_unit = object.getString("continuous_claim_unit");
-                                String last_claim = object.getString("last_claim");
-                                String status = object.getString("status");
-                                String created_at = object.getString("created_at");
-                                String updated_at = object.getString("updated_at");
-                                String deleted_at = object.getString("deleted_at");
+                        if (task.isSuccessful()) {
+                            //ibGoogle.setEnabled(true);
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                            String personName = "", personEmail = "", personId = "";
+                            if (acct != null) {
+                                personName = acct.getDisplayName();
+                                String personGivenName = acct.getGivenName();
+                                String personFamilyName = acct.getFamilyName();
+                                personEmail = acct.getEmail();
+                                personId = acct.getId();
+                                Uri personPhoto = acct.getPhotoUrl();
+                                //updateUI();
 
-                                new SharedPref(mContext).setLoginSetupValues(id, name, type,
-                                        contact_no, email, address, country, state, is_verified_email,
-                                        is_verified_contact_no, img_url, referral_code,
-                                        is_password_change_required, facebook_id, google_id,
-                                        continuous_claim_unit, last_claim, status, created_at);
+                                ////////////
+                                GetUser getUser = new GoogleLogin(LoginActivity.this, personName, personEmail, personId);
+                                getUser.getUserDetails();
+                                ////////////
 
-                                SharedPreferenceUtil.putValue(LocalConstants.USER_IMAGE, new Gson().toJson(img_url));
                             }
-                            Log.d(TAG, "token: " + token);
+                            //api.postSocial(personName, personEmail, personId);
 
-                            new SharedPref(mContext).setLoginStatus(true);
-                            new SharedPref(mContext).setKen(token);
-                            //startActivity(new Intent(mContext,MainActivity.class));
-
-                            //To return data to previous activity
-                            Intent returnIntent = new Intent();
-                            returnIntent.putExtra("loginStatus", "true");
-                            setResult(Activity.RESULT_OK, returnIntent);
-                            finish();
-
-                            ///To return nothing to previous activity
-                           /* Intent returnIntent = new Intent();
-                            setResult(Activity.RESULT_CANCELED, returnIntent);
-                            finish();*/
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            //ibGoogle.setEnabled(true);
+                            // If sign in fails, display a message to the user.
+                            Log.d("TAG", "signInWithCredential:failure", task.getException());
+                            //updateUI();
                         }
-                        /*try {
-                            JSONArray array = new JSONArray(response);
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject object = array.getJSONObject(i);
-                                String name = object.getString("name");
-                                String profileUrl = object.getString("profile_pic");
-                                String apiKey = object.getString("API-KEY");
-                                String clientId = object.getString("client_id");
-                                String docId = object.getString("id");
-
-                                new SharedPref(mContext).setLoginSetupValues(apiKey, name, profileUrl, clientId, docId);
-                                new SharedPref(mContext).setLoginStatus(true);
-
-                                startActivity(new Intent(mContext, MainActivity.class));
-                                finish();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }*/
                     }
-                }
-                if (statusCode[0] == 204) {
-                    hideMyLoader();
-                    showSnack("No Content", clParent);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "responseCode:" + statusCode[0]);
-
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    hideMyLoader();
-                    showSnack("No Connectivity", clParent);
-                } else if (error instanceof AuthFailureError) {
-                    hideMyLoader();
-                    showSnack("Authentication Failed", clParent);
-                } else if (error instanceof ServerError) {
-                    //hideMyLoader(alertDialog);
-                    showSnack("Server Error", clParent);
-                } else if (error instanceof NetworkError) {
-                    hideMyLoader();
-                    showSnack("Network Connectivity Error", clParent);
-                } else if (error instanceof ParseError) {
-                    hideMyLoader();
-                    showSnack("Try Again", clParent);
-                }
-            }
-        }) {
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                statusCode[0] = response.statusCode;
-                return super.parseNetworkResponse(response);
-            }
-
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                NetworkResponse networkResponse = volleyError.networkResponse;
-                if (networkResponse != null) {
-                    statusCode[0] = volleyError.networkResponse.statusCode;
-                    Log.d(TAG, "networkResponse:" + networkResponse.toString());
-                }
-                return super.parseNetworkError(volleyError);
-            }
-
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> map = new HashMap<>();
-                map.put("API-KEY", mContext.getResources().getString(R.string.api_key));
-                return map;
-            }*/
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("type", "manual");
-                param.put("email", username);
-                param.put("password", password);
-                return param;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(request);
+                });
     }
 
     @Override
@@ -265,5 +225,9 @@ public class LoginActivity extends BaseActivity {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
+    }
+
+    public void onSignUp(View view) {
+        startActivity(new Intent(mContext, SignUpActivity.class));
     }
 }

@@ -9,6 +9,7 @@ import com.app.letuscs.models.homeModel.ModelBanner;
 import com.app.letuscs.models.homeModel.ModelHomeGrids;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
@@ -42,11 +43,12 @@ public class HomeActivity extends BaseActivity {
 
 
     private int[] imageRes = {R.drawable.ic_recent_post, R.drawable.ic_ask_question
+            ,R.drawable.ic_account
             , R.drawable.ic_contest, R.drawable.ic_rank
             , R.drawable.ic_archive, R.drawable.ic_course
             , R.drawable.ic_contacts, R.drawable.ic_google_play};
 
-    private String[] imageName = {"Recent Posts", "Ask Questions"
+    private String[] imageName = {"Recent Posts", "Ask Questions","My Account"
             , "My Contest", "My Rank"
             , "Archive", "Courses Offered"
             , "Contact Us", "Rate Us"};
@@ -122,6 +124,12 @@ public class HomeActivity extends BaseActivity {
                     case 3:
                         break;
                     case 4:
+                        break;
+                    case 7:
+                        String url = "http://atechnologies.co.in/training-centers";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
                         break;
                     default:
                         break;

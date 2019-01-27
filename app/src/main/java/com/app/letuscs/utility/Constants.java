@@ -53,6 +53,7 @@ public class Constants {
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_EMAIL = "email";
     public static final String PARAM_PASSWORD ="password";
-    public static final Object PARAM_CONTACT_NO = "contact_no";
-    public static final Object PARAM_NAME = "name";
+    public static final String PARAM_CONTACT_NO = "contact_no";
+    public static final String PARAM_NAME = "name";
+    public static final String PARAM_USER_ID = "user_id";
 }
