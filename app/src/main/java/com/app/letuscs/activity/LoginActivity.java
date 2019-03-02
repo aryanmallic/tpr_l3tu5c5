@@ -162,7 +162,6 @@ public class LoginActivity extends BaseActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.d("Google SignIn: ", "Google sign in failed", e);
 
-
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 int statusCode = result.getStatus().getStatusCode();
                 Toast.makeText(mContext, ""+statusCode+": "+result.getStatus().getStatusMessage(), Toast.LENGTH_SHORT).show();

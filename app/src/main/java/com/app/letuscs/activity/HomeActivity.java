@@ -104,10 +104,11 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void myViews(int position) {
                 switch (position) {
-                    case 0:
+                    case 0://RecentPost
                         startActivity(new Intent(mContext, PostActivity.class));
                         break;
                     case 1:
+                        //Ask Question
                         if (new SharedPref(mContext).getLoginStatus()) {
                             if (HelperMethods.isOnline(mContext)) {
                                 startActivity(new Intent(mContext, WritePostActivity.class));
@@ -120,16 +121,47 @@ public class HomeActivity extends BaseActivity {
                         }
                         break;
                     case 2:
+                        //My Account
+                        Toast.makeText(mContext, "Coming Soon", Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
+                        //My Contest
+                        String urlContest ="http://atechnologies.co.in/app/contest";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(urlContest));
+                        startActivity(i);
                         break;
                     case 4:
+                        //My Rank
+                        String urlRank="http://atechnologies.co.in/app/rank";
+                        Intent i4 = new Intent(Intent.ACTION_VIEW);
+                        i4.setData(Uri.parse(urlRank));
+                        startActivity(i4);
+                        break;
+                    case 5:
+                        //My Archive
+                        String urlArchive="http://atechnologies.co.in/app/archive";
+                        Intent i5 = new Intent(Intent.ACTION_VIEW);
+                        i5.setData(Uri.parse(urlArchive));
+                        startActivity(i5);
+                        break;
+                    case 6:
+                        //my Courses
+                        String urlCouse="http://atechnologies.co.in/app/courses";
+                        Intent i6 = new Intent(Intent.ACTION_VIEW);
+                        i6.setData(Uri.parse(urlCouse));
+                        startActivity(i6);
                         break;
                     case 7:
-                        String url = "http://atechnologies.co.in/training-centers";
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        startActivity(i);
+                        //contact
+                        String url = "http://atechnologies.co.in/app/contact";
+                        Intent i7 = new Intent(Intent.ACTION_VIEW);
+                        i7.setData(Uri.parse(url));
+                        startActivity(i7);
+                        break;
+                    case 8:
+                        //Rate
+                        onUpdate();
                         break;
                     default:
                         break;
@@ -145,6 +177,15 @@ public class HomeActivity extends BaseActivity {
         }
         adapterHome = new AdapterHome(itemData, mContext, myOnItemClickListner);
         rvHome.setAdapter(adapterHome);
+    }
+
+    public void onUpdate(){
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     private void getBannerFromServer() {
