@@ -24,6 +24,10 @@ import com.app.letuscs.utility.HelperMethods;
 import com.app.letuscs.utility.SharedPref;
 import com.app.letuscs.web.api.ApiClient;
 import com.app.letuscs.web.api.ApiInterface;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +66,7 @@ public class HomeActivity extends BaseActivity {
     private AdapterHome.MyOnItemClickListner myOnItemClickListner;
 
     //Firebase
-    private com.google.firebase.analytics.FirebaseAnalytics mFirebaseAnalytics;
+    private AdView mAdView;
 
 
     @Override
@@ -76,13 +80,17 @@ public class HomeActivity extends BaseActivity {
         clParent = findViewById(R.id.activity_home_clParent);
         vpBanner = findViewById(R.id.activity_home_vpBanner);
         indicator=findViewById(R.id.indicator);
+        mAdView=findViewById(R.id.adView);
     }
 
     @Override
     protected void initializeComponentsBehaviour() {
         mContext = getApplicationContext();
 
-        mFirebaseAnalytics = com.google.firebase.analytics.FirebaseAnalytics.getInstance(this);
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         /*Bundle bundle = new Bundle();
         //bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "screen");
@@ -169,6 +177,41 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         };
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                Log.d(TAG,"VAL: 1");
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Log.d(TAG,"VAL: 2");
+                Log.d(TAG,"VAL: "+errorCode);
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                Log.d(TAG,"VAL: 3");
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Log.d(TAG,"VAL: 4");
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                Log.d(TAG,"VAL: 5");
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
 
         GridLayoutManager manager = new GridLayoutManager(mContext, 3);
         rvHome.setLayoutManager(manager);

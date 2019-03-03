@@ -29,6 +29,9 @@
     <string name="network_server_Error">Server Error</string>
     <string name="network_error_try_again">Error Try Again</string>
     <string name="network_failure_error">Network Error</string>
+    <string name="admob_app_id">ca-app-pub-5331553200470762~3175506027</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5331553200470762/2840464108</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
 
 
 </resources>
