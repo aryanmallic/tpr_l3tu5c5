@@ -5,12 +5,10 @@ import android.widget.Toast;
 
 import com.app.letuscs.models.modelLogin.ModelLogin;
 import com.app.letuscs.utility.Constants;
-import com.app.letuscs.web.api.apiPost.PostLoginApi;
+import com.app.letuscs.utility.SharedPref;
 import com.app.letuscs.web.api.apiPost.PostSignUpApi;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
 
@@ -34,6 +32,7 @@ public class GoogleLogin extends GetUser implements PostSignUpApi.PostSignUpApiL
                                 hashMap.put(Constants.PARAM_TYPE, "google");
                                 hashMap.put(Constants.PARAM_NAME,personName);
                                 hashMap.put(Constants.PARAM_EMAIL, personEmail);
+                                hashMap.put(Constants.PARAM_CONTACT_NO,"123456789");
                                 hashMap.put(Constants.PARAM_USER_ID, personId);
         postSignUpApi = new PostSignUpApi(mActivity, this);
         postSignUpApi.postSignUp(hashMap);
@@ -47,5 +46,12 @@ public class GoogleLogin extends GetUser implements PostSignUpApi.PostSignUpApiL
     @Override
     public void onPostSignUpError(String message) {
         Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            new SharedPref(mActivity).clearPreferences();
+            //Firebase Logout/Gmail Logout
+            mAuth.signOut();
+        }
     }
 }

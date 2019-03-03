@@ -39,6 +39,8 @@ import com.app.letuscs.utility.SharedPref;
 import com.app.letuscs.web.api.ApiClient;
 import com.app.letuscs.web.api.ApiInterface;
 import com.app.letuscs.web.api.apiPost.PostLikesApi;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -76,6 +78,7 @@ public class PostActivity extends BaseActivity implements PostLikesApi.PostLikeA
     private AdapterPost.PostSetOnItemClickListner postSetOnItemClickListner;
     private PostLikesApi postLikesApi;
     //Firebase
+    FirebaseAuth auth;
     //private com.google.firebase.analytics.FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -94,6 +97,8 @@ public class PostActivity extends BaseActivity implements PostLikesApi.PostLikeA
     @Override
     protected void initializeComponentsBehaviour() {
         mContext = this;
+
+        auth = FirebaseAuth.getInstance();
 
         postLikesApi = new PostLikesApi(this, this);
 
@@ -463,4 +468,20 @@ public class PostActivity extends BaseActivity implements PostLikesApi.PostLikeA
         });
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            //normal login
+            if (!new SharedPref(mContext).getLoginStatus()) {
+                //Toast.makeText(PostActivity.this, "You are not Logged in", Toast.LENGTH_LONG).show();
+                new SharedPref(mContext).clearPreferences();
+            }
+        } else {
+                //Google Login
+        }
+    }
+
 }

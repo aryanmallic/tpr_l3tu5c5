@@ -137,7 +137,6 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.activity_login_llGoogle:
-
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
                 break;

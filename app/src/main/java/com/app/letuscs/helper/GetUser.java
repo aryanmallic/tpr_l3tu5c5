@@ -29,7 +29,6 @@ public abstract class GetUser extends AppCompatActivity {
                 , response.getData().get(0).getContactNo());
 
         updateUI(mActivity);
-
     }
 
     public void saveDetails(int id,String token, String name, String email, String phone) {

@@ -167,7 +167,7 @@
                     android:background="@drawable/back_social"
                     android:clickable="true"
                     android:padding="@dimen/_4sdp"
-                    android:visibility="invisible">
+                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="@dimen/_30sdp"

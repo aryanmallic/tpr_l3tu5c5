@@ -118,4 +118,10 @@ public class SharedPref {
     public int getPostCount() {
         return sharedPreferences.getInt("postCount", 0);
     }
+
+    public void clearPreferences() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 }
